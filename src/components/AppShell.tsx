@@ -21,6 +21,8 @@ type NavItem = {
   group: "Workspace" | "People" | "Money" | "Ops" | "Admin";
 };
 
+const NAV_NEW_BADGE = new Set<string>(["/time-dashboard", "/bonus", "/alyson-notetaker"]);
+
 const NAV: NavItem[] = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard, end: true, group: "Workspace" },
   { to: "/team", label: "Team", icon: Users, group: "People", roles: ["super_admin", "ceo", "hr", "manager"] },
@@ -131,7 +133,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         }
                       >
                         <Icon className="h-4 w-4 shrink-0" />
-                        {showLabel && <span className="truncate">{item.label}</span>}
+                        {showLabel && (
+                          <span className="min-w-0 flex-1 flex items-center gap-2">
+                            <span className="truncate">{item.label}</span>
+                            {NAV_NEW_BADGE.has(item.to) && (
+                              <span className="pill pill-info text-[8px] px-1.5 py-0 leading-none">
+                                NEW
+                              </span>
+                            )}
+                          </span>
+                        )}
                       </Link>
                     );
                   })}
